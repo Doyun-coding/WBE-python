@@ -6,9 +6,13 @@ from scipy.io import wavfile
 from worker.stt.util.stt_worker_util import record_triggered_by_voice
 from worker.tts.tts_worker_process import run_tts_worker
 from threading import Thread
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # OpenAI api key
-client = OpenAI()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=openai_api_key)
 # whisper large (base, medium, large 클 수록 성능이 높음) 모델 로딩
 model = whisper.load_model("base")
 

@@ -1,8 +1,12 @@
 import os
 from openai import OpenAI
+from dotenv import load_dotenv
 
-# GPT API KEY
-client = OpenAI()
+load_dotenv()
+
+# OpenAI api key
+openai_api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=openai_api_key)
 
 
 # tts 기능

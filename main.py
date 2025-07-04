@@ -4,7 +4,7 @@ from server.session_manager import start_stt_session
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
 
 
 # FastAPI 사용

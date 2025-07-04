@@ -2,17 +2,20 @@ import webrtcvad
 import collections
 import sounddevice as sd
 import numpy as np
-import process
+import whisper
 import os
 import tempfile
 import scipy.io.wavfile as wav
 from openai import OpenAI
+from dotenv import load_dotenv
 
-# 챗지피티 API KEY
-client = OpenAI()
+load_dotenv()
 
+# OpenAI api key
+openai_api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=openai_api_key)
 # process 모델 설정
-model = process.load_model("base")
+model = whisper.load_model("base")
 
 # 음성 인식 민감도 2로 설정 / 0~3 (3이 가장 민감)
 vad = webrtcvad.Vad(2)
@@ -23,6 +26,7 @@ frame_duration = 30     # 오디오를 30ms 단위로 잘라서 분석
 frame_size = int(sample_rate * frame_duration / 1000)   # 30ms 동안의 오디오를 샘플링하면 총 480개의 샘플이 생긴다는 의미
 channels = 1            # 모노 채널
 silence_threshold = 33  # 무음이 15프레임 연속(약 30 × 30ms = 1초) 감지되면 "녹음 끝났다"고 판단
+
 
 def is_speech(frame_bytes):
     return vad.is_speech(frame_bytes, sample_rate)
@@ -133,6 +137,7 @@ def main():
         os.system("afplay output.mp3")
 
         os.remove(temp_filename)
+
 
 if __name__ == "__main__":
     main()
